@@ -1,6 +1,21 @@
 @WebApi_HostAddress = http://localhost:5067
 
+### Auth
+POST {{WebApi_HostAddress}}/Auth
+Accept: application/json
+Content-Type: application/json
+
+{
+  "userName": "admin",
+  "password": "password"
+}
+
+> {%
+    // JWT string (starts with eyJ...)
+    client.global.set("bearerToken", response.body.access_token.access_token);
+%}
+
+### Protected
 GET {{WebApi_HostAddress}}/weatherforecast/
 Accept: application/json
-
-###
+Authorization: Bearer {{bearerToken}}
